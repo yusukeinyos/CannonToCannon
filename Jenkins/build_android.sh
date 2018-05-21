@@ -1,10 +1,10 @@
-#! /bin/bash
+#! /bin/sh
 
 set -e
 
 # TODO gitから取得
 # Projectルートパス
-export PROJECT_ROOT="/Users/a14753/Documents/Unity/CannonToCannon"
+export PROJECT_ROOT="$(git rev-parse --show-toplevel)"
 # ProjectVersionファイルパス
 PROJECT_VERSION_FILE="$(find "$PROJECT_ROOT" -type f -wholename '*/ProjectSettings/ProjectVersion.txt' -print0)"
 
