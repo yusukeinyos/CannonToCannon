@@ -1,8 +1,11 @@
 #! /bin/sh
 
+# コマンドのステータスが0でない場合は、即時終了する
 set -e
 
-# TODO gitから取得
+# 実行コマンドを表示
+set -x
+
 # Projectルートパス
 export PROJECT_ROOT="$(git rev-parse --show-toplevel)"
 # ProjectVersionファイルパス
