@@ -37,18 +37,19 @@ export UNITY_BATCH_BUILD_OPTIONS=" \
     -executeMethod ${BUILD_METHOD}" 
 
 # Android development kit path
-ANDROID_SDK_PATH="/Users/a14753/Library/Android/sdk"
-JDK_PATH="/Library/Java/JavaVirtualMachines/jdk1.8.0_101.jdk/Contents/Home/"
-ANDROID_NDK_PATH="/Applications/android-ndk-r13b"
+# BuildBatch.cs側で再度指定するための設定
+export ANDROID_SDK_ROOT="${HOME}/Library/Android/sdk"
+export JDK_PATH="/Library/Java/JavaVirtualMachines/jdk1.8.0_101.jdk/Contents/Home/"
+export ANDROID_NDK_ROOT="/Applications/android-ndk-r13b"
 
-if [[ ! -d ${ANDROID_SDK_PATH} ]] ; then
-    echo "Invalid Andoid SDK directory path: ${ANDROID_SDK_PATH}" >&2
+if [[ ! -d ${ANDROID_SDK_ROOT} ]] ; then
+    echo "Invalid Andoid SDK directory path: ${ANDROID_SDK_ROOT}" >&2
 fi
 if [[ ! -d ${JDK_PATH} ]] ; then
     echo "Invalid JDK directory path: ${JDK_PATH}" >&2
 fi
-if [[ ! -d ${ANDROID_NDK_PATH} ]] ; then
-    echo "Invalid Andoid NDK directory path: ${ANDROID_NDK_PATH}" >&2
+if [[ ! -d ${ANDROID_NDK_ROOT} ]] ; then
+    echo "Invalid Andoid NDK directory path: ${ANDROID_NDK_ROOT}" >&2
 fi
 
 # ビルド実行
