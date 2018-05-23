@@ -1,43 +1,25 @@
 #! /bin/sh
 
-# コマンドのステータスが0でない場合は、即時終了する
-set -e
+echo "build Android"
 
-# 実行コマンドを表示
-set -x
-
-# Projectルートパス
-export PROJECT_ROOT="$(git rev-parse --show-toplevel)"
-# ProjectVersionファイルパス
-PROJECT_VERSION_FILE="$(find "$PROJECT_ROOT" -type f -wholename '*/ProjectSettings/ProjectVersion.txt' -print0)"
-
-UNITY_VERSION="2018.1.0f2"
-
-# Unity実行ファイルパス
-export UNITY_BIN="/Applications/Unity/Unity.app/Contents/MacOS/Unity"
-
-# TODO ProjectVersionファイルの情報を元にUnity Versionを指定できるように
-if [[ ! -x "$UNITY_BIN" ]] ; then
-    echo "Unity is not available: $UNITY_BIN" >&2
+# 共通設定実行シェルのパス
+COMMON_ENV_CONFIG_PATH="$(dirname "$0")/configure_common_build_env.sh"
+if [[ ! -e "${COMMON_ENV_CONFIG_PATH}" ]] ; then
+    echo "file could not be found: ${COMMON_ENV_CONFIG_PATH}"
     exit 1
 fi
 
-# Unityプロジェクトパス
-export UNITY_PROJECT_PATH="${PROJECT_ROOT}"
+# Android, iOS共通で使う変数の設定
+. "$COMMON_ENV_CONFIG_PATH"
 
-# ビルド実行メソッド
-BUILD_METHOD="BuildBatch.BuildAndroid"
+# ビルド実行メソッドオプション
+BUILD_METHOD_OPTION="-executeMethod BuildBatch.BuildAndroid" 
 
-# Unityバッチモードビルドのオプション
-export UNITY_BATCH_BUILD_OPTIONS=" \
-    -batchmode \
-    -quit \
-    -logFile build.log \
-    -projectPath ${UNITY_PROJECT_PATH} \
-    -executeMethod ${BUILD_METHOD}" 
+# ビルドオプション
+UNITY_BATCH_BUILD_OPTIONS="$UNITY_BATCH_BUILD_COMMON_OPTIONS $BUILD_METHOD_OPTION"
 
-# Android development kit path
-# BuildBatch.cs側で再度指定するための設定
+# Android development kitのパス
+# BuildBatch.cs側で指定するための設定
 export ANDROID_SDK_ROOT="${HOME}/Library/Android/sdk"
 export JDK_PATH="/Library/Java/JavaVirtualMachines/jdk1.8.0_101.jdk/Contents/Home/"
 export ANDROID_NDK_ROOT="/Applications/android-ndk-r13b"
