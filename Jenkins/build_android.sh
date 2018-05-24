@@ -21,7 +21,7 @@ UNITY_BATCH_BUILD_OPTIONS="$UNITY_BATCH_BUILD_COMMON_OPTIONS $BUILD_METHOD_OPTIO
 # Android development kitのパス
 # BuildBatch.cs側で指定するための設定
 export ANDROID_SDK_ROOT="${HOME}/Library/Android/sdk"
-export JDK_PATH="/Library/Java/JavaVirtualMachines/jdk10.0.1.jdk/Contents/Home/"
+export JDK_PATH="/Library/Java/JavaVirtualMachines/jdk-10.0.1.jdk/Contents/Home/"
 export ANDROID_NDK_ROOT="/Applications/android-ndk-r13b"
 
 if [[ ! -d ${ANDROID_SDK_ROOT} ]] ; then
