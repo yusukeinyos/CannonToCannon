@@ -10,7 +10,7 @@ if [[ ! -e "${COMMON_ENV_CONFIG_PATH}" ]] ; then
 fi
 
 # Android, iOS共通で使う変数の設定
-. "$COMMON_ENV_CONFIG_PATH"
+TARGET_PLATFORM=android . "$COMMON_ENV_CONFIG_PATH"
 
 # ビルド実行メソッドオプション
 BUILD_METHOD_OPTION="-executeMethod BuildBatch.BuildAndroid" 

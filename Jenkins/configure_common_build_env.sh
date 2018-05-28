@@ -22,12 +22,25 @@ if [[ ! -x "$UNITY_BIN" ]] ; then
     exit 1
 fi
 
+# TARGET_PLATFORMのチェック
+case "$TARGET_PLATFORM" in
+    ios | android) ;;
+    "") {
+        echo "#! TARGET_PLATFORM is not specified." >&2
+        exit 1
+    } ;;
+    * ) {
+        echo "#! invalid TARGET_PLATFORM: '$TARGET_PLATFORM'" >&2
+        exit 1
+    }
+esac
+
 # Unityプロジェクトパス
-export UNITY_PROJECT_PATH="${PROJECT_ROOT}"
+export UNITY_PROJECT_PATH="${PROJECT_ROOT}" 
 
 # Unityバッチモードビルドの共通オプション
 export UNITY_BATCH_BUILD_COMMON_OPTIONS=" \
     -batchmode \
     -quit \
-    -logFile build_android.log \
+    -logFile build_"${TARGET_PLATFORM}".log \
     -projectPath ${UNITY_PROJECT_PATH}"
