@@ -77,7 +77,7 @@ cat ${EXPORT_OPTIONS_PLIST}
 xcodebuild \
     -exportArchive \
     -archivePath ${XCODE_PROJECT}/${APP_NAME}.xcarchive \
-    -exportPath $HOME/Export \
+    -exportPath ${XCODE_WORKSPACE}/Export \
     -exportOptionsPlist ${EXPORT_OPTIONS_PLIST}
 
 exit 0
