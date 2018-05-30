@@ -10,13 +10,11 @@ set -x
 export PROJECT_ROOT="$(git rev-parse --show-toplevel)"
 # ProjectVersionファイルパス
 export PROJECT_VERSION_FILE="$(find "$PROJECT_ROOT" -type f -wholename '*/ProjectSettings/ProjectVersion.txt' -print0)"
+# Unityのバージョン
+export UNITY_VERSION=$(grep EditorVersion < $PROJECT_VERSION_FILE | awk '{print $2}')
 
-export UNITY_VERSION="2018.1.0f2"
-
-# Unity実行ファイルパス
-export UNITY_BIN="/Applications/Unity/Unity.app/Contents/MacOS/Unity"
-
-# TODO ProjectVersionファイルの情報を元にUnity Versionを指定できるように
+# Unity実行ファイルのパス（Hub用）
+export UNITY_BIN="/Applications/Unity/Hub/Editor/${UNITY_VERSION}/Unity.app/Contents/MacOS/Unity"
 if [[ ! -x "$UNITY_BIN" ]] ; then
     echo "Unity is not available: $UNITY_BIN" >&2
     exit 1
