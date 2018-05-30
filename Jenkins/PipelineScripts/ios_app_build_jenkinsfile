@@ -1,0 +1,40 @@
+pipeline {
+  // ジョブを実行するエージェントを指定 : 特になければ any で
+  agent {
+      label 'mac_slave'
+  }
+  
+  environment {
+    KEYCHAIN_PASSCODE = credentials('slave_keychain_passcode')
+  }
+  
+  parameters {
+    string(name: 'TARGET_BRANCH', defaultValue: 'origin/master', description: 'ビルド対象のブランチ')
+  }
+  
+  stages {
+    stage('Git checkout') {
+      steps {
+        checkout([$class: 'GitSCM',
+            branches: [[name: '${TARGET_BRANCH}']],
+            doGenerateSubmoduleConfigurations: false,
+            extensions: [],
+            submoduleCfg: [],
+            userRemoteConfigs: [[credentialsId: '20dc33d8-aadc-40c0-9c7b-1c19bc7861b1', url: 'https://github.com/yusukeinyos/CannonToCannon.git']]
+            ])
+      }
+    }
+    stage('Build') {
+      steps {
+        // sh 'PASS_CODE=$(grep keychain_passcode < $HOME/Documents/Passcode/keychain_passcode.txt | awk \'{print $2}\')'
+        sh 'security unlock-keychain -p "${KEYCHAIN_PASSCODE}"'
+        sh 'sh ./Jenkins/build_ios.sh'
+      }
+    }
+    stage('Archive') {
+      steps {
+        archiveArtifacts 'build/Export/*.ipa'
+      }
+    }
+  }
+}
