@@ -1,0 +1,29 @@
+pipeline {
+  // ジョブを実行するエージェントを指定 : 特になければ any で
+  agent {
+      label 'mac_slave'
+  }
+  stages {
+    stage('Git checkout') {
+      steps {
+        checkout([$class: 'GitSCM',
+            branches: [[name: '${target_branch}']],
+            doGenerateSubmoduleConfigurations: false,
+            extensions: [],
+            submoduleCfg: [],
+            userRemoteConfigs: [[credentialsId: '20dc33d8-aadc-40c0-9c7b-1c19bc7861b1', url: 'https://github.com/yusukeinyos/CannonToCannon.git']]
+            ])
+      }
+    }
+    stage('Build') {
+      steps {
+        sh 'sh ./Jenkins/build_android.sh'
+      }
+    }
+    stage('Archive') {
+      steps {
+        archiveArtifacts '*.apk'
+      }
+    }
+  }
+}
