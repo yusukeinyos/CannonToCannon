@@ -1,13 +1,16 @@
 pipeline {
   // ジョブを実行するエージェントを指定 : 特になければ any で
   agent {
-      label 'mac_slave'
+    label 'mac_slave'
+  }
+  parameters {
+    string(name: 'TARGET_BRANCH', defaultValue: 'origin/master', description: 'ビルド対象のブランチ')
   }
   stages {
     stage('Git checkout') {
       steps {
         checkout([$class: 'GitSCM',
-            branches: [[name: '${target_branch}']],
+            branches: [[name: '${TARGET_BRANCH}']],
             doGenerateSubmoduleConfigurations: false,
             extensions: [],
             submoduleCfg: [],
